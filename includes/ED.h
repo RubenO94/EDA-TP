@@ -22,12 +22,12 @@
 
 /**
  * @brief Cria um novo nó na estrutura ED.
- * @param type Tipo do nó ('A-Z, a-z' para antena, '#' para efeito nefasto).
+ * @param frequency Tipo do nó ('A-Z, a-z' para antena, '#' para efeito nefasto).
  * @param x Coordenada X.
  * @param y Coordenada Y.
  * @return Apontador para o novo nó criado.
  */
-ED* createED(char type, int x, int y);
+ED* createED(char frequency, int x, int y);
 
 
 /**
@@ -37,10 +37,3 @@ ED* createED(char type, int x, int y);
  * @return Apontador atualizado da estrutura ED.
  */
 ED* insertED(ED* head, ED* newNode);
-
-
-
- ED* insertAntenna(ED* head, char frequency, int x, int y);
- ED* removeAntenna(ED* head, int x, int y);
- void listAntennas(ED* head);
- void freeAntennaList(ED* head);
