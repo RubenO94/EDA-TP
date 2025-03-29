@@ -1,7 +1,7 @@
 /**
  * @file ed_io.h
  * @author Rúben Oliveira (a24861@alunos.ipca.pt)
- * @brief Funções responsáveis por carregar, guardar e apresentar listas ED e metadados da matriz.
+ * @brief Funções responsáveis por carregar, guardar listas ED e metadados da matriz.
  * @version 0.1
  * @date 2025-03-21
  * @copyright Copyright (c) 2025
@@ -12,15 +12,6 @@
 #include "ed.h"
 #include "dimensions.h"
 #include "constants.h"
-
-/**
- * @brief Modo de impressão da matriz.
- */
-typedef enum
-{
-    PRINT_ANTENNAS_ONLY, // Imprime apenas as antenas
-    PRINT_WITH_EFFECTS   // Imprime antenas e efeitos nefastos (se existirem)
-} PrintMode;
 
 /**
  * @brief Guarda a lista ligada ED num ficheiro binário.
@@ -51,19 +42,3 @@ ED *load_ed_from_bin(const char *filename);
  * @return 1 em caso de sucesso, 0 em caso de falha (ex: ficheiro inválido).
  */
 int load_matrix(const char *filepath, ED **head, Dimensions *dim);
-
-/**
- * @brief Imprime a matriz no terminal com base nas antenas e (opcionalmente) nos efeitos.
- *
- * A matriz é impressa no formato linha × coluna com as seguintes representações:
- * - '.' para posição vazia
- * - 'A-Z' para antenas
- * - '#' para efeitos
- * - '#A' quando há efeito e antena na mesma posição
- *
- * @param antennas Lista ligada de antenas (obrigatória).
- * @param effects Lista ligada de efeitos (opcional, consoante o modo).
- * @param dim Estrutura com as dimensões da matriz.
- * @param mode Modo de impressão (somente antenas ou antenas + efeitos).
- */
-void print_matrix(ED *antennas, ED *effects, Dimensions *dim, PrintMode mode);

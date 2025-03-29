@@ -6,20 +6,6 @@
 #include <ctype.h>
 #include <string.h>
 
-#pragma region Private_Functions_Definition
-
-/**
- * @brief
- *
- * @param antennas
- * @param effects
- * @param x
- * @param y
- */
-static void print_cell_symbol(ED *antennas, ED *effects, int x, int y, int with_effects);
-
-#pragma endregion Private_Functions_Definition
-
 #pragma region Public_Functions
 
 int load_matrix(const char *filepath, ED **head, Dimensions *dim)
@@ -132,59 +118,4 @@ ED *load_ed_from_bin(const char *filename)
     return head;
 }
 
-void print_matrix(ED *antennas, ED *effects, Dimensions *dim, PrintMode mode)
-{
-    if (!dim || dim->rows <= 0 || dim->cols <= 0)
-    {
-        printf("[!] Dimensões inválidas.\n");
-        return;
-    }
-
-    if (!antennas)
-    {
-        printf("[!] Não existem antenas carregadas.\n");
-        return;
-    }
-
-    int with_effects = (mode == PRINT_WITH_EFFECTS && effects != NULL);
-
-    // Cabeçalho das colunas
-    printf("    "); // Espaço para alinhar com numeração das linhas
-    for (int x = 0; x < dim->cols; x++)
-    {
-        printf("%3d", x); // Imprime cada número de coluna com 2 espaços
-    }
-    printf("\n");
-
-    for (int y = 0; y < dim->rows; y++)
-    {
-        printf("%3d ", y); // Imprime número da linha
-
-        for (int x = 0; x < dim->cols; x++)
-        {
-            print_cell_symbol(antennas, effects, x, y, with_effects);
-        }
-        printf("\n");
-    }
-}
-
 #pragma endregion Public_Functions
-
-#pragma region Private_Functions
-
-static void print_cell_symbol(ED *antennas, ED *effects, int x, int y, int with_effects)
-{
-    const ED *ant = find_ed(antennas, x, y);
-    const ED *ef = with_effects ? find_ed(effects, x, y) : NULL;
-
-    if (ef && ant)
-        printf(ANSI_BOLD ANSI_YELLOW " #%c" ANSI_RESET, ant->frequency); // Efeito + antena
-    else if (ef)
-        printf(ANSI_BOLD ANSI_RED "#  " ANSI_RESET); // Só efeito
-    else if (ant)
-        printf(ANSI_BOLD ANSI_GREEN "  %c" ANSI_RESET, ant->frequency); // Só antena
-    else
-        printf("  ."); // Vazio
-}
-
-#pragma endregion Private_Functions

@@ -35,20 +35,18 @@ int detect_effects(ED *antennas, Dimensions *dim, ED **effects)
 
                 if (dist < MIN_EFFECT_DISTANCE)
                 {
-                    // Direção normalizada
                     int dir_x = (dx == 0) ? 0 : (dx > 0 ? 1 : -1);
                     int dir_y = (dy == 0) ? 0 : (dy > 0 ? 1 : -1);
 
-                    // Efeito nefasto a partir de a1
-                    int x1 = a1->x + dir_x * dist;
-                    int y1 = a1->y + dir_y * dist;
+                    // Posição fora da A1
+                    int x1 = a1->x - dir_x * dist;
+                    int y1 = a1->y - dir_y * dist;
+
+                    // Posição fora da A2
+                    int x2 = a2->x + dir_x * dist;
+                    int y2 = a2->y + dir_y * dist;
 
                     effects_count += insert_effect_at(x1, y1, dim, effects);
-
-                    // Efeito nefasto a partir de a2
-                    int x2 = a2->x - dir_x * dist;
-                    int y2 = a2->y - dir_y * dist;
-
                     effects_count += insert_effect_at(x2, y2, dim, effects);
                 }
             }
@@ -63,7 +61,7 @@ int detect_effects(ED *antennas, Dimensions *dim, ED **effects)
 
 static int insert_effect_at(int x, int y, Dimensions *dim, ED **effects)
 {
-    if (x < 0 || x >= dim->cols || y < 0 || y >= dim->rows)
+    if (!is_within_bounds(x, y, dim))
         return 0;
 
     ED *e = create_ed(EFFECT_SYMBOL, x, y);
