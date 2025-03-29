@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include "terminal_colors.h"
 
 /**
  * @brief Mostra o menu principal da aplicação e retorna a escolha do utilizador.

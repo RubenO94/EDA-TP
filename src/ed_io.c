@@ -6,7 +6,8 @@
 #include <ctype.h>
 #include <string.h>
 
-#pragma region Public_Functions
+static int load_ed_list_from_bin(FILE *fp, ED **head);
+static int save_ed_list_to_bin(FILE *fp, const ED *head);
 
 int load_matrix(const char *filepath, ED **head, Dimensions *dim)
 {
@@ -69,53 +70,106 @@ int load_matrix(const char *filepath, ED **head, Dimensions *dim)
     return 1;
 }
 
-int save_ed_to_bin(ED *head, const char *filename)
+int save_all_to_bin(ED *antennas, ED *effects, Dimensions *dim, const char *filepath)
 {
-    FILE *fp = fopen(filename, "wb");
+    if (!antennas || !dim || !filepath)
+        return 0;
+
+    FILE *fp = fopen(filepath, "wb");
     if (!fp)
         return 0;
 
-    const ED *current = head;
-    while (current != NULL)
+    // Guardar dimensões
+    fwrite(&(dim->rows), sizeof(int), 1, fp);
+    fwrite(&(dim->cols), sizeof(int), 1, fp);
+
+    // Guardar antenas & Efeitos
+    if (!save_ed_list_to_bin(fp, antennas) ||
+        !save_ed_list_to_bin(fp, effects))
     {
-        fwrite(&(current->frequency), sizeof(char), 1, fp);
-        fwrite(&(current->x), sizeof(int), 1, fp);
-        fwrite(&(current->y), sizeof(int), 1, fp);
-        current = current->next;
+        fclose(fp);
+        return 0;
     }
 
     fclose(fp);
     return 1;
 }
 
-ED *load_ed_from_bin(const char *filename)
+int load_all_from_bin(ED **antennas, ED **effects, Dimensions *dim, const char *filepath)
 {
-    FILE *fp = fopen(filename, "rb");
+    if (!antennas || !effects || !dim || !filepath)
+        return 0;
+
+    FILE *fp = fopen(filepath, "rb");
     if (!fp)
-        return NULL;
+        return 0;
 
-    ED *head = NULL;
+    // Limpar listas anteriores
+    if (*antennas)
+        free_ed_list(antennas);
+    if (*effects)
+        free_ed_list(effects);
 
-    char freq;
-    int x, y;
+    fread(&(dim->rows), sizeof(int), 1, fp);
+    fread(&(dim->cols), sizeof(int), 1, fp);
 
-    while (fread(&freq, sizeof(char), 1, fp) == 1 &&
-           fread(&x, sizeof(int), 1, fp) == 1 &&
-           fread(&y, sizeof(int), 1, fp) == 1)
+    if (!load_ed_list_from_bin(fp, antennas) ||
+        !load_ed_list_from_bin(fp, effects))
     {
-
-        ED *node = create_ed(freq, x, y);
-        if (!node)
-        {
-            free_ed_list(&head);
-            fclose(fp);
-            return NULL;
-        }
-        insert_ed(&head, node);
+        fclose(fp);
+        return 0;
     }
 
     fclose(fp);
-    return head;
+    return 1;
 }
 
-#pragma endregion Public_Functions
+static int load_ed_list_from_bin(FILE *fp, ED **head)
+{
+    int count;
+    if (fread(&count, sizeof(int), 1, fp) != 1)
+        return 0;
+
+    for (int i = 0; i < count; i++)
+    {
+        char f;
+        int x, y;
+        if (fread(&f, sizeof(char), 1, fp) != 1 ||
+            fread(&x, sizeof(int), 1, fp) != 1 ||
+            fread(&y, sizeof(int), 1, fp) != 1)
+        {
+            return 0;
+        }
+
+        ED *node = create_ed(f, x, y);
+        if (!node || !insert_ed(head, node))
+        {
+            free(node);
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+static int save_ed_list_to_bin(FILE *fp, const ED *head)
+{
+    int count = 0;
+    for (const ED *cur = head; cur; cur = cur->next)
+        count++;
+
+    if (fwrite(&count, sizeof(int), 1, fp) != 1)
+        return 0;
+
+    for (const ED *cur = head; cur; cur = cur->next)
+    {
+        if (fwrite(&(cur->frequency), sizeof(char), 1, fp) != 1 ||
+            fwrite(&(cur->x), sizeof(int), 1, fp) != 1 ||
+            fwrite(&(cur->y), sizeof(int), 1, fp) != 1)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}

@@ -39,3 +39,5 @@
  *
  */
 #define DEFAULT_MATRIX_PATH "inputs/matriz.txt"
+
+#define OUTPUT_PATH "output"

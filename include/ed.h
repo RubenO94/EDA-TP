@@ -17,11 +17,11 @@
 /**
  * @brief Estrutura que representa um elemento da matriz (antena ou efeito), com frequência e coordenadas.
  */
-typedef struct ed
+typedef struct ED
 {
     char frequency;  /**< Frequência da antena (A-Z, a-z) ou '#' para efeito */
     int x, y;        /**< Coordenadas na matriz */
-    struct ed *next; /**< Apontador para o próximo nó na lista */
+    struct ED *next; /**< Apontador para o próximo nó na lista */
 } ED;
 
 #pragma endregion Structs
@@ -38,10 +38,10 @@ typedef struct ed
 ED *create_ed(char frequency, int x, int y);
 
 /**
- * @brief Insere um nó já criado na estrutura ED.
- * @param head Apontador para a cabeça da lista ED.
- * @param new_node Apontador para o nó criado previamente.
- * @return 1 em caso de sucesso, 0 em caso de falha.
+ * @brief Insere o nó na posição correta mantendo a lista ordenada por coordenadas.
+ * @param head Apontador para o apontador da cabeça da lista.
+ * @param new_node Nó previamente criado com coordenadas e frequência.
+ * @return 1 em caso de sucesso, 0 em caso de erro (ex: apontador nulo).
  */
 int insert_ed(ED **head, ED *new_node);
 

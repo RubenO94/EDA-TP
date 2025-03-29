@@ -1,21 +1,19 @@
+/**
+ * @file ed.c
+ * @author your name (you@domain.com)
+ * @brief
+ * @version 0.1
+ * @date 2025-03-29
+ *
+ * @copyright Copyright (c) 2025
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include "ed.h"
 
-#pragma region Private_Functions_Contracts
-
-/**
- * @brief Insere o nó na posição correta mantendo a lista ordenada por coordenadas.
- * @param head Apontador para o apontador da cabeça da lista.
- * @param new_node Nó previamente criado com coordenadas e frequência.
- * @return 1 em caso de sucesso, 0 em caso de erro (ex: apontador nulo).
- */
-static int insert_ed_ordered(ED **head, ED *new_node);
-
-#pragma endregion Private_Functions_Contracts
-
-#pragma region ED-H_Implementation
 ED *create_ed(char frequency, int x, int y)
 {
     ED *new_node = (ED *)malloc(sizeof(ED));
@@ -36,10 +34,28 @@ int insert_ed(ED **head, ED *new_node)
     if (!head || !new_node)
         return 0;
 
-    if (find_ed(*head, new_node->x, new_node->y))
-        return 0;
+    if (*head == NULL ||
+        new_node->y < (*head)->y ||
+        (new_node->y == (*head)->y && new_node->x < (*head)->x))
+    {
+        // Insere no início
+        new_node->next = *head;
+        *head = new_node;
+        return 1;
+    }
 
-    return insert_ed_ordered(head, new_node);
+    ED *current = *head;
+    while (current->next &&
+           (current->next->y < new_node->y ||
+            (current->next->y == new_node->y && current->next->x < new_node->x)))
+    {
+        current = current->next;
+    }
+
+    // Insere entre current e current->next (pode ser fim)
+    new_node->next = current->next;
+    current->next = new_node;
+    return 1;
 }
 
 ED *find_ed(ED *head, int x, int y)
@@ -103,34 +119,3 @@ int free_ed_list(ED **head)
     *head = NULL;
     return 1;
 }
-
-#pragma endregion ED - H_Implementation
-
-#pragma region Private_Functions_Implementation
-static int insert_ed_ordered(ED **head, ED *new_node)
-{
-    if (*head == NULL ||
-        new_node->y < (*head)->y ||
-        (new_node->y == (*head)->y && new_node->x < (*head)->x))
-    {
-        // Insere no início
-        new_node->next = *head;
-        *head = new_node;
-        return 1;
-    }
-
-    ED *current = *head;
-    while (current->next &&
-           (current->next->y < new_node->y ||
-            (current->next->y == new_node->y && current->next->x < new_node->x)))
-    {
-        current = current->next;
-    }
-
-    // Insere entre current e current->next (pode ser fim)
-    new_node->next = current->next;
-    current->next = new_node;
-    return 1;
-}
-
-#pragma endregion Private_Functions_Implementation

@@ -12,7 +12,7 @@
 #pragma once
 
 #include "ed.h"
-#include "dimensions.h"
+#include "geometry.h"
 #include "terminal_colors.h"
 
 typedef enum
