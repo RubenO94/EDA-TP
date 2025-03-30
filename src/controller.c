@@ -1,17 +1,23 @@
 /**
  * @file controller.c
  * @author Rúben Oliveira (a24861@alunos.ipca.pt)
- * @brief Orquestra operações de gestão de antenas e efeitos.
- * @version 0.1
- * @date 2025-03-26
+ * @brief Implementação da lógica de controlo de antenas e efeitos.
+ * @version 1.0
+ * @date 2025-03-28
+ *
+ * Contém a lógica para gerir a lista de antenas, efeitos nefastos,
+ * e coordenação com ficheiros binários e de texto.
  */
 
 #include "controller.h"
+#include "ed.h"
 #include "ed_io.h"
+#include "ed_validator.h"
 #include "effect.h"
 #include "display.h"
-#include <stdlib.h>
+#include <stddef.h>
 #include <ctype.h>
+#include <malloc.h>
 
 ED *antennas = NULL;
 ED *effects = NULL;
@@ -28,87 +34,45 @@ int load_map(const char *filepath)
     if (effects)
         free_ed_list(&effects);
 
-    return load_matrix(filepath, &antennas, &dim);
-}
-
-int generate_effects()
-{
-    if (!antennas)
-        return -1;
-
-    // Libertar primeiro caso exista efeitos na lista
-    if (effects)
-        free_ed_list(&effects);
-    return generate_all_effects(antennas, &dim, &effects);
+    int load_result = load_matrix(filepath, &antennas, &dim);
+    if (!load_result)
+        return 0;
+    if (generate_all_effects(antennas, &dim, &effects) < 0)
+        return 0;
+    return 1;
 }
 
 int insert_antenna(char freq, int x, int y)
 {
-    // Validações
-    if (!is_within_bounds(x, y, &dim))
-        return 0;
+    if (!isalpha(freq) || !is_within_bounds(x, y, &dim) || find_ed(antennas, x, y))
+        return -1;
 
-    if (find_ed(antennas, x, y))
-        return 0;
-
-    // Criar e Inserir
     ED *node = create_ed(freq, x, y);
     if (!node || !insert_ed(&antennas, node))
     {
         free(node);
-        return 0;
+        return -1;
     }
 
-    // Detetar efeitos com todas as outras antenas
-    for (ED *a = antennas; a; a = a->next)
-    {
-        if (a == node)
-            continue;
-
-        Coord e1, e2;
-        if (detect_effect_pair(node, a, &dim, &e1, &e2))
-        {
-            // Inserir os efeitos detectados na lista de efeitos
-            insert_effect_at(e1, &dim, &effects);
-            insert_effect_at(e2, &dim, &effects);
-        }
-    }
-
-    return 1;
+    // Detetar efeitos com outras antenas
+    int effects_found = detect_effects_for_node(node, antennas, &dim, &effects);
+    return effects_found >= 0 ? effects_found : -1;
 }
 
 int remove_antenna(int x, int y)
 {
-    if (!find_ed(antennas, x, y))
-        return 0;
-
     ED *target = find_ed(antennas, x, y);
     if (!target)
-        return 0;
+        return -1;
 
-    for (ED *a = antennas; a; a = a->next)
-    {
-        if (a == target)
-            continue;
+    int effects_removed = remove_effects_for_node(target, antennas, &dim, &effects);
+    if (!remove_ed(&antennas, x, y))
+        return -1;
 
-        Coord e1, e2;
-        if (detect_effect_pair(target, a, &dim, &e1, &e2))
-        {
-            remove_ed(&effects, e1.x, e1.y);
-            remove_ed(&effects, e2.x, e2.y);
-        }
-    }
-
-    remove_ed(&antennas, x, y);
-    return 1;
+    return effects_removed >= 0 ? effects_removed : -1;
 }
 
-void show_antennas()
-{
-    print_matrix(antennas, NULL, &dim, PRINT_ANTENNAS_ONLY);
-}
-
-void show_effects()
+void show_matrix()
 {
     print_matrix(antennas, effects, &dim, PRINT_WITH_EFFECTS);
 }

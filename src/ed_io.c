@@ -1,9 +1,9 @@
 #include "ed_io.h"
+#include "ed_validator.h"
 #include "constants.h"
 #include "terminal_colors.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 
 static int load_ed_list_from_bin(FILE *fp, ED **head);
@@ -39,18 +39,14 @@ int load_matrix(const char *filepath, ED **head, Dimensions *dim)
         {
             char ch = linha[col];
 
-            if (isalpha(ch))
+            if (is_valid_frequency(ch) && !find_ed(*head, col, row))
             {
-                // Verificar se já existe algo nesta coordenada
-                if (!find_ed(*head, col, row))
+                ED *node = create_ed(ch, col, row);
+                if (!node || !insert_ed(head, node))
                 {
-                    ED *node = create_ed(ch, col, row);
-                    if (!node || !insert_ed(head, node))
-                    {
-                        free(node);
-                        fclose(file);
-                        return 0;
-                    }
+                    free(node);
+                    fclose(file);
+                    return 0;
                 }
             }
 
@@ -74,7 +70,6 @@ int save_all_to_bin(ED *antennas, ED *effects, Dimensions *dim, const char *file
 {
     if (!antennas || !dim || !filepath)
         return 0;
-
     FILE *fp = fopen(filepath, "wb");
     if (!fp)
         return 0;

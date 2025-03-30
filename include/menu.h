@@ -1,24 +1,20 @@
 /**
  * @file menu.h
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
+ * @author Rúben Oliveira
+ * @brief Interface do menu principal da aplicação.
+ * @version 1.0
  * @date 2025-03-29
  *
- * @copyright Copyright (c) 2025
- *
+ * Este módulo gere a interação com o utilizador através de um menu textual.
+ * Permite executar operações como inserção, remoção, carregamento e visualização.
  */
+
 #pragma once
-#include "terminal_colors.h"
 
 /**
- * @brief Mostra o menu principal da aplicação e retorna a escolha do utilizador.
+ * @brief Inicia o ciclo principal do menu e interação com o utilizador.
  *
- * @return int Opção escolhida (número inteiro).
+ * Apresenta as opções disponíveis e executa a ação correspondente com base
+ * na escolha do utilizador. Corre em loop até o utilizador optar por sair.
  */
-int show_main_menu();
-
-/**
- * @brief Limpa o ecrã do terminal (cross-platform).
- */
-void clear_screen();
+void start_menu();

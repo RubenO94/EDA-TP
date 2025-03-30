@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "display.h"
-
-#pragma region Private_Functions_Definition
+#include "constants.h"
 
 #pragma region Private_Functions_Definition
 static void print_horizontal_border_top(int cols);
@@ -16,13 +15,7 @@ void print_matrix(ED *antennas, ED *effects, Dimensions *dim, PrintMode mode)
 {
     if (!dim || dim->rows <= 0 || dim->cols <= 0)
     {
-        printf(ANSI_RED "[!] Dimensões inválidas.\n" ANSI_RESET);
-        return;
-    }
-
-    if (!antennas)
-    {
-        printf(ANSI_RED "[!] Não existem antenas carregadas.\n" ANSI_RESET);
+        printf(ANSI_RED "[X] Dimensões inválidas.\n" ANSI_RESET);
         return;
     }
 
@@ -37,13 +30,15 @@ void print_matrix(ED *antennas, ED *effects, Dimensions *dim, PrintMode mode)
             total_effects++;
 
     // Cabeçalho informativo
-    printf(ANSI_BOLD "\n📡 MATRIZ DE ANTENAS E EFEITOS\n" ANSI_RESET);
+    printf(ANSI_BOLD "\n📡 TABULEIRO DE ANTENAS E EFEITOS\n" ANSI_RESET);
     printf("Dimensões: %d linhas × %d colunas\n", dim->rows, dim->cols);
     printf("Total de antenas: " ANSI_GREEN "%d\n" ANSI_RESET, total_antennas);
     if (with_effects)
         printf("Total de efeitos: " ANSI_RED "%d\n" ANSI_RESET, total_effects);
 
+    // Regras
     print_matrix_rules_summary();
+
     // Legenda
     printf("\nLegenda:\n");
     printf(ANSI_GREEN "  A" ANSI_RESET " = Antena  | ");

@@ -1,43 +1,76 @@
 /**
  * @file constants.h
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2025-03-29
+ * @author Rúben Oliveira (a24861@alunos.ipca.pt)
+ * @brief Constantes globais utilizadas em todo o projeto.
+ * @version 1.0
+ * @date 2025-03-28
+ *
+ * Este ficheiro centraliza todas as definições de constantes que são
+ * reutilizadas ao longo do sistema, permitindo uma fácil manutenção.
  *
  * @copyright Copyright (c) 2025
- *
  */
+
 #pragma once
 
 /**
- * @brief Tamanho máximo de uma linha lida de ficheiro .txt
+ * @brief Tamanho máximo de uma linha lida de um ficheiro .txt.
  *
+ * Usado na leitura da matriz a partir de ficheiros de texto.
  */
 #define MAX_LINE_LENGTH 1024
 
 /**
- * @brief Tamanho máximo permitido para nomes de ficheiros
+ * @brief Tamanho máximo permitido para nomes de ficheiros.
  *
+ * Inclui o nome base e extensão, por exemplo: "projeto1.bin".
  */
 #define MAX_FILENAME_LENGTH 100
 
 /**
- * @brief Distância mínima aceitável entre antenas da mesma frequência
+ * @brief Distância mínima aceitável entre antenas da mesma frequência.
  *
+ * Caso duas antenas estejam mais próximas do que este valor e tenham
+ * a mesma frequência (ignorando maiúsculas/minúsculas), será gerado
+ * um efeito nefasto entre elas.
+ *
+ * @note O valor deve ser >= 1 para garantir comportamentos válidos.
  */
-#define MIN_EFFECT_DISTANCE 4
+#define MIN_EFFECT_DISTANCE 2
 
 /**
- * @brief Carácter que representa um efeito nefasto na matriz
+ * @brief Carácter que representa um efeito nefasto na matriz.
  *
+ * Usado na impressão da matriz e ao guardar os dados no sistema.
  */
 #define EFFECT_SYMBOL '#'
 
 /**
- * @brief Caminho padrão para o ficheiro de matriz de entrada
+ * @brief Caminho padrão para o ficheiro .txt com a matriz inicial.
  *
+ * Utilizado quando não é especificado outro caminho pelo utilizador.
  */
-#define DEFAULT_MATRIX_PATH "inputs/matriz.txt"
+#define DEFAULT_MATRIX_PATH "input/matriz.txt"
 
-#define OUTPUT_PATH "output"
+/**
+ * @brief Diretório onde os projetos (ficheiros .bin) são guardados.
+ *
+ * @note Este diretório deve existir previamente ou ser criado manualmente.
+ */
+#define PROJECTS_PATH "data/"
+
+/**
+ * @brief Tamanho máximo do caminho de um ficheiro (path).
+ *
+ * Inclui diretório, nome do ficheiro e extensão.
+ */
+#define MAX_PATH 256
+
+/**
+ * @brief Tamanho máximo da string de timestamp (data/hora).
+ *
+ * Utilizado ao gerar nomes de ficheiros com base em data e hora.
+ *
+ * @example "2025-03-29_12-45-59" → 19 caracteres + null terminator.
+ */
+#define MAX_TIMESTAMP 32

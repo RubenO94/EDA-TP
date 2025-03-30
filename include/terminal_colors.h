@@ -1,27 +1,27 @@
 /**
  * @file terminal_colors.h
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
+ * @author Rúben Oliveira (a24861@alunos.ipca.pt)
+ * @brief Definições de macros ANSI para formatação colorida no terminal.
+ * @version 1.0
  * @date 2025-03-29
  *
- * @copyright Copyright (c) 2025
+ * Este ficheiro contém definições de escape ANSI para aplicar cores e estilos
+ * no texto impresso no terminal, melhorando a experiência de visualização.
  *
+ * @note Compatível com a maioria dos terminais Unix/Linux e alguns terminais modernos no Windows.
  */
+
 #pragma once
 
-/// Códigos ANSI para formatação de texto no terminal
+/// @name Estilos de texto
+/// @{
+#define ANSI_RESET "\x1b[0m" /** Remove todas as formatações ativas */
+#define ANSI_BOLD "\x1b[1m"  /** Texto em negrito */
+/// @}
 
-// Reset e estilos
-#define ANSI_RESET "\x1b[0m"
-#define ANSI_BOLD "\x1b[1m"
-
-// Cores básicas
-#define ANSI_BLACK "\x1b[30m"
-#define ANSI_RED "\x1b[31m"
-#define ANSI_GREEN "\x1b[32m"
-#define ANSI_YELLOW "\x1b[33m"
-#define ANSI_BLUE "\x1b[34m"
-#define ANSI_MAGENTA "\x1b[35m"
-#define ANSI_CYAN "\x1b[36m"
-#define ANSI_WHITE "\x1b[37m"
+/// @name Cores de texto
+/// @{
+#define ANSI_RED "\x1b[31m"    /** Texto vermelho (erros, alertas) */
+#define ANSI_GREEN "\x1b[32m"  /** Texto verde (sucesso, confirmações) */
+#define ANSI_YELLOW "\x1b[33m" /** Texto amarelo (avisos, destaques) */
+/// @}
