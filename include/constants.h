@@ -65,12 +65,3 @@
  * Inclui diretório, nome do ficheiro e extensão.
  */
 #define MAX_PATH 256
-
-/**
- * @brief Tamanho máximo da string de timestamp (data/hora).
- *
- * Utilizado ao gerar nomes de ficheiros com base em data e hora.
- *
- * @example "2025-03-29_12-45-59" → 19 caracteres + null terminator.
- */
-#define MAX_TIMESTAMP 32
