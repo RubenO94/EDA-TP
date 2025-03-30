@@ -1,0 +1,3 @@
+## 1. Introdução
+
+O presente trabalho foi desenvolvido no âmbito da unidade curricular de **Estruturas de Dados Avançadas**, inserida no curso de Engenharia de Sistemas Informáticos. O principal objetivo deste projeto é a aplicação prática de estruturas de dados dinâmicas, em particular listas ligadas, para resolver um problema computacional com múltiplos elementos, relações e operações sobre uma estrutura que evolui ao longo do tempo.
