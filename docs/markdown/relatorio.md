@@ -7,10 +7,10 @@
 - [Introdução](#introdução)
 - [Apresentação do Problema](#apresentação-do-problema)
 - [Regras Definidas](#regras-definidas)
-- [Estrutura de Dados Utilizada](#estrutura-de-dados-utilizada)
-- [Funcionalidades Implementadas](#funcionalidades-implementadas)
-- [Casos de Teste](#casos-de-teste)
-- [Conclusão](#conclusão)
+- [Estrutura de Dados Utilizada (TODO)](#estrutura-de-dados-utilizada)
+- [Funcionalidades Implementadas (TODO)](#funcionalidades-implementadas)
+- [Casos de Teste (TODO)](#casos-de-teste)
+- [Conclusão (TODO)](#conclusão)
 
 ## Introdução
 

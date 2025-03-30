@@ -36,7 +36,7 @@ Implementação de um sistema de gestão de antenas e deteção de efeitos nefas
 
 O relatório do projeto encontra-se disponível em formato Markdown:
 
-👉 [Ver Relatório da Fase 1 (Em progresso)](./docs/relatorio.md)
+👉 [Ver Relatório da Fase 1 (Em progresso)](./docs/markdown/relatorio.md)
 
 ## 🔗 Repositório GitHub
 
