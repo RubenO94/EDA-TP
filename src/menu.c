@@ -22,7 +22,7 @@
  * @brief Pausa a execução do programa
  *
  */
-static void pause();
+static void pause(int after_scan);
 
 /**
  * @brief Limpa o ecrã do terminal (suporte multiplataforma).
@@ -75,8 +75,9 @@ void start_menu()
         if (scanf("%d", &opcao) != 1)
         {
             printf(ANSI_RED "[X] Entrada inválida! Insira um número.\n" ANSI_RESET);
-            while (getchar() != '\n')
-                ;
+            // while (getchar() != '\n')
+            //     ;
+            pause(1);
             opcao = -1;
             continue;
         }
@@ -97,13 +98,13 @@ void start_menu()
             break;
         case 4:
             menu_save_project();
-            pause();
             break;
         case 0:
             printf("A sair...\n");
             break;
         default:
             printf(ANSI_RED "[!] Opção inválida." ANSI_RESET);
+            pause(0);
         }
 
     } while (opcao != 0);
@@ -126,10 +127,13 @@ static void clear_screen()
 #endif
 }
 
-static void pause()
+static void pause(int after_scan)
 {
+    if (after_scan)
+        while (getchar() != '\n')
+            ;
+
     printf("\nPrima ENTER para continuar...");
-    getchar();
     getchar();
 }
 
@@ -155,7 +159,7 @@ static void menu_insert_antenna()
     {
         printf(ANSI_RED "[X] Erro ao inserir antena.\n" ANSI_RESET);
     }
-    pause();
+    pause(1);
 }
 
 static void menu_remove_antenna()
@@ -176,7 +180,7 @@ static void menu_remove_antenna()
     {
         printf(ANSI_RED "[X] Erro ao remover antena.\n" ANSI_RESET);
     }
-    pause();
+    pause(1);
 }
 
 static void menu_load_project()
@@ -190,6 +194,7 @@ static void menu_load_project()
         printf(ANSI_GREEN "[✓] Projeto carregado com sucesso!\n" ANSI_RESET);
     else
         printf(ANSI_RED "[X] Erro ao carregar projeto.\n" ANSI_RESET);
+    pause(1);
 }
 
 static void menu_save_project()
@@ -203,6 +208,7 @@ static void menu_save_project()
         printf(ANSI_GREEN "[✓] Projeto guardado com sucesso!\n" ANSI_RESET);
     else
         printf(ANSI_RED "[X] Erro ao guardar projeto.\n" ANSI_RESET);
+    pause(1);
 }
 
 #pragma endregion
