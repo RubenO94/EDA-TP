@@ -42,7 +42,6 @@ O relatório do projeto encontra-se disponível em formato Markdown:
 
 [https://github.com/RubenO94/EDA-TP/tree/v-1-0](https://github.com/RubenO94/EDA-TP/tree/v-1-0)
 
-> Substituir pelo link real do repositório.
 
 ## 👨‍💻 Autor
 
