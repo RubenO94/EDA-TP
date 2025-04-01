@@ -30,7 +30,7 @@ Implementação de um sistema de gestão de antenas e deteção de efeitos nefas
    ```bash
    doxygen Doxyfile
    ```
-   A documentação será gerada na pasta `docs/html`.
+   A documentação será gerada na pasta `docs/doxygen`.
 
 ## 📄 Relatório
 
