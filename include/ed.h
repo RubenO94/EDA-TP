@@ -21,11 +21,11 @@
  *
  * @note A frequência '#' representa um efeito nefasto.
  */
-typedef struct ED
+typedef struct ed
 {
-    char frequency;  /** Frequência da antena (A-Z, a-z) ou '#' para efeito nefasto. */
-    int x, y;        /** Coordenadas (coluna x, linha y) na matriz. */
-    struct ED *next; /** Apontador para o próximo nó na lista. */
+  char frequency;  /** Frequência da antena (A-Z, a-z) ou '#' para efeito nefasto. */
+  int x, y;        /** Coordenadas (coluna x, linha y) na matriz. */
+  struct ed *next; /** Apontador para o próximo nó na lista. */
 } ED;
 
 #pragma endregion Structs

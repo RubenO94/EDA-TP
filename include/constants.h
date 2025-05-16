@@ -65,3 +65,9 @@
  * Inclui diretório, nome do ficheiro e extensão.
  */
 #define MAX_PATH 256
+
+/**
+ * @brief
+ *
+ */
+#define MAX_VERTICES 1000

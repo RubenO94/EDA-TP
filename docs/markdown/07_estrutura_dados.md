@@ -5,7 +5,7 @@ Para representar a rede de antenas e os efeitos nefastos, foi definida uma estru
 A estrutura principal utilizada é a seguinte:
 
 ```c
-typedef struct {
+typedef struct ed {
     char frequency;   // Frequência da antena ou efeito nefasto
     int x;            // Coordenada X
     int y;            // Coordenada Y
