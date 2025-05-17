@@ -53,11 +53,11 @@ typedef struct Vertex
 /**
  * @brief Representa o grafo completo (lista de vértices + contador).
  */
-typedef struct Graph
+typedef struct GR
 {
   Vertex *head;     /** Cabeça da lista de vértices */
   int vertex_count; /** Número total de vértices no grafo */
-} Graph;
+} GR;
 
 // === Funções de manipulação do grafo ===
 
@@ -65,7 +65,7 @@ typedef struct Graph
  * @brief Cria um novo grafo vazio.
  * @return Apontador para o grafo criado, ou NULL em caso de erro.
  */
-Graph *graph_create();
+GR *graph_create();
 
 /**
  * @brief Cria um novo vértice com os dados fornecidos (sem inseri-lo no grafo).
@@ -84,7 +84,7 @@ Vertex *graph_create_vertex(char frequency, int x, int y);
  * @param v Vértice criado com graph_create_vertex.
  * @return 1 em caso de sucesso, 0 se já existir vértice com as mesmas coordenadas.
  */
-int graph_add_vertex(Graph *g, Vertex *v);
+int graph_add_vertex(GR *g, Vertex *v);
 
 /**
  * @brief Procura um vértice no grafo com base nas coordenadas.
@@ -94,7 +94,7 @@ int graph_add_vertex(Graph *g, Vertex *v);
  * @param y Coordenada Y.
  * @return Apontador para o vértice encontrado ou NULL se não existir.
  */
-Vertex *graph_find_vertex(Graph *g, int x, int y);
+Vertex *graph_find_vertex(GR *g, int x, int y);
 
 /**
  * @brief Adiciona uma aresta entre dois vértices (ligações unidirecional).
@@ -111,14 +111,14 @@ int graph_add_edge(Vertex *from, Vertex *to);
  * @param g Grafo a libertar.
  * @return 1 se a limpeza foi bem-sucedida, 0 se o grafo já estava vazio ou inválido.
  */
-int graph_free(Graph *g);
+int graph_free(GR *g);
 
 /**
  * @brief Imprime todos os vértices do grafo e suas conexões.
  *
  * @param g Grafo a imprimir.
  */
-void graph_print(Graph *g);
+void graph_print(GR *g);
 
 // === Validação ===
 
@@ -131,4 +131,4 @@ void graph_print(Graph *g);
  * @param y Posição Y.
  * @return Código de validação (enum VertexValidation).
  */
-int graph_validate_vertex(Graph *g, char frequency, int x, int y);
+int graph_validate_vertex(GR *g, char frequency, int x, int y);

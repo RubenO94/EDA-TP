@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "ed.h"
-#include "geometry.h"
-#include "constants.h"
+#include "core/ed.h"
+#include "core/constants.h"
+#include "utils/geometry.h"
 
 /**
  * @brief Guarda todas as informações do projeto num ficheiro binário.

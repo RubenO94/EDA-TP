@@ -10,8 +10,8 @@
  */
 
 #pragma once
-#include "graph.h"
-#include "geometry.h" // Para Dimensions
+#include "core/graph.h"
+#include "utils/geometry.h" // Para Dimensions
 #include <stdio.h>
 
 /**
@@ -23,7 +23,7 @@
  * @param filename Caminho para o ficheiro .bin.
  * @return 1 em caso de sucesso, 0 em caso de erro.
  */
-int save_graph(const Graph *g, const char *filename);
+int save_graph(const GR *g, const char *filename);
 
 /**
  * @brief Carrega um grafo completo a partir de um ficheiro binário.
@@ -33,7 +33,7 @@ int save_graph(const Graph *g, const char *filename);
  * @param filename Caminho do ficheiro .bin.
  * @return Apontador para o grafo carregado ou NULL em caso de erro.
  */
-Graph *load_graph(const char *filename);
+GR *load_graph(const char *filename);
 
 /**
  * @brief Constrói um grafo a partir de um ficheiro de texto com a matriz de antenas.
@@ -45,4 +45,4 @@ Graph *load_graph(const char *filename);
  * @param dim Estrutura opcional onde serão armazenadas as dimensões da matriz (pode ser NULL).
  * @return Grafo construído com os vértices e ligações, ou NULL em caso de erro.
  */
-Graph *load_graph_from_txt(const char *filename, Dimensions *dim);
+GR *load_graph_from_txt(const char *filename, Dimensions *dim);

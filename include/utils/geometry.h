@@ -10,7 +10,7 @@
  */
 
 #pragma once
-#include "ed.h"
+#include "core/ed.h"
 
 /**
  * @brief Representa uma coordenada (x, y) na matriz.
@@ -19,8 +19,8 @@
  */
 typedef struct
 {
-    int x; /** Coluna */
-    int y; /** Linha */
+  int x; /** Coluna */
+  int y; /** Linha */
 } Coord;
 
 /**
@@ -30,8 +30,8 @@ typedef struct
  */
 typedef struct
 {
-    int rows; /** Número total de linhas (altura) */
-    int cols; /** Número total de colunas (largura) */
+  int rows; /** Número total de linhas (altura) */
+  int cols; /** Número total de colunas (largura) */
 } Dimensions;
 
 /**

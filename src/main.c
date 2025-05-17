@@ -6,7 +6,7 @@
  * @date 2025-03-14
  */
 
-#include "menu.h"
+#include "ui/menu.h"
 
 /**
  * @brief Função principal que inicia a aplicação.
@@ -17,6 +17,6 @@
  */
 int main(void)
 {
-    start_menu();
-    return 0;
+  start_menu();
+  return 0;
 }

@@ -9,7 +9,7 @@
  */
 
 #pragma once
-#include "graph.h"
+#include "core/graph.h"
 
 /**
  * @brief Callback a aplicar em cada vértice visitado.
@@ -55,4 +55,4 @@ void graph_find_all_paths(Vertex *start, Vertex *end);
  * @param freq_a Primeira frequência.
  * @param freq_b Segunda frequência.
  */
-void graph_list_frequency_intersections(Graph *g, char freq_a, char freq_b);
+void graph_list_frequency_intersections(GR *g, char freq_a, char freq_b);

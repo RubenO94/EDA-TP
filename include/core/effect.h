@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include "geometry.h"
-#include "ed.h"
+#include "utils/geometry.h"
+#include "core/ed.h"
 
 /**
  * @brief Gera a lista completa de efeitos nefastos com base nas antenas.

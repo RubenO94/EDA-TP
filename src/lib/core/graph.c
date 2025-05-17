@@ -9,16 +9,16 @@
  *
  */
 
-#include "graph.h"
-#include "stdio.h"
-#include "malloc.h"
+#include "core/graph.h"
+#include <stdio.h>
+#include <malloc.h>
 #include <ctype.h>
 
 // === Criação e validação ===
 
-Graph *graph_create()
+GR *graph_create()
 {
-  Graph *g = malloc(sizeof(Graph));
+  GR *g = malloc(sizeof(GR));
   if (!g)
     return NULL;
 
@@ -29,9 +29,6 @@ Graph *graph_create()
 
 Vertex *graph_create_vertex(char frequency, int x, int y)
 {
-  if (!isalpha(frequency) || x < 0 || y < 0)
-    return NULL;
-
   Vertex *v = malloc(sizeof(Vertex));
   if (!v)
     return NULL;
@@ -45,7 +42,7 @@ Vertex *graph_create_vertex(char frequency, int x, int y)
   return v;
 }
 
-int graph_validate_vertex(Graph *g, char frequency, int x, int y)
+int graph_validate_vertex(GR *g, char frequency, int x, int y)
 {
   if (!isalpha(frequency))
     return INVALID_FREQUENCY;
@@ -56,7 +53,7 @@ int graph_validate_vertex(Graph *g, char frequency, int x, int y)
   return VALID;
 }
 
-Vertex *graph_find_vertex(Graph *g, int x, int y)
+Vertex *graph_find_vertex(GR *g, int x, int y)
 {
   if (!g)
     return NULL;
@@ -71,7 +68,7 @@ Vertex *graph_find_vertex(Graph *g, int x, int y)
   return NULL;
 }
 
-int graph_add_vertex(Graph *g, Vertex *v)
+int graph_add_vertex(GR *g, Vertex *v)
 {
   if (!g || !v)
     return 0;
@@ -79,15 +76,33 @@ int graph_add_vertex(Graph *g, Vertex *v)
   if (graph_find_vertex(g, v->x, v->y))
     return 0;
 
-  // Inserir ordenado por coordenadas: primeiro Y, depois X
-  Vertex **curr = &g->head;
-  while (*curr && ((*curr)->y < v->y || ((*curr)->y == v->y && (*curr)->x < v->x)))
+  // Caso 1: lista vazia
+  if (!g->head)
   {
-    curr = &((*curr)->next);
+    g->head = v;
+    g->vertex_count++;
+    return 1;
   }
 
-  v->next = *curr;
-  *curr = v;
+  // Caso 2: inserir no início (antes do head atual)
+  if (v->y < g->head->y || (v->y == g->head->y && v->x < g->head->x))
+  {
+    v->next = g->head;
+    g->head = v;
+    g->vertex_count++;
+    return 1;
+  }
+
+  // Caso 3: inserir no meio ou fim
+  Vertex *curr = g->head;
+  while (curr->next &&
+         (curr->next->y < v->y || (curr->next->y == v->y && curr->next->x < v->x)))
+  {
+    curr = curr->next;
+  }
+
+  v->next = curr->next;
+  curr->next = v;
   g->vertex_count++;
   return 1;
 }
@@ -123,6 +138,7 @@ Adj_Node *graph_create_edge(Vertex *dest)
 
 int graph_add_edge(Vertex *from, Vertex *to)
 {
+  // Validações
   if (!from || !to)
     return 0;
   if (from == to)
@@ -136,19 +152,33 @@ int graph_add_edge(Vertex *from, Vertex *to)
   if (!new_edge)
     return 0;
 
-  new_edge->dest = to;
-  new_edge->next = NULL;
-
-  // Inserir de forma ordenada na lista de adjacências (por y, depois x)
-  Adj_Node **curr = &from->adj_list;
-  while (*curr && ((*curr)->dest->y < to->y ||
-                   ((*curr)->dest->y == to->y && (*curr)->dest->x < to->x)))
+  // Caso 1: lista de adjacência vazia
+  if (!from->adj_list)
   {
-    curr = &((*curr)->next);
+    from->adj_list = new_edge;
+    return 1;
   }
 
-  new_edge->next = *curr;
-  *curr = new_edge;
+  // Caso 2: inserir no início
+  if (to->y < from->adj_list->dest->y ||
+      (to->y == from->adj_list->dest->y && to->x < from->adj_list->dest->x))
+  {
+    new_edge->next = from->adj_list;
+    from->adj_list = new_edge;
+    return 1;
+  }
+
+  // Caso 3: inserir no meio ou fim
+  Adj_Node *curr = from->adj_list;
+  while (curr->next &&
+         (curr->next->dest->y < to->y ||
+          (curr->next->dest->y == to->y && curr->next->dest->x < to->x)))
+  {
+    curr = curr->next;
+  }
+
+  new_edge->next = curr->next;
+  curr->next = new_edge;
 
   return 1;
 }
