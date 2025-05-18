@@ -1,58 +1,56 @@
 /**
  * @file algorithms.h
  * @author
- * @brief Interface para os algoritmos de grafos (BFS, DFS, caminhos, interseções).
+ * @brief Algoritmos de grafos: BFS, DFS, caminhos e interseções.
  * @version 1.0
- * @date 2025-05-XX
+ * @date 2025-05-15
  *
- * Fornece funções de percurso e análise de grafos com suporte para callbacks.
+ * Este módulo implementa algoritmos clássicos de percurso e análise em grafos
+ * com base em listas ligadas: busca em largura, profundidade, caminhos múltiplos
+ * e interseções entre frequências distintas.
  */
 
 #pragma once
 #include "core/graph.h"
 
-/**
- * @brief Callback a aplicar em cada vértice visitado.
- *
- * @param v Apontador para o vértice.
- */
-typedef void (*VisitCallback)(Vertex *v);
+// =========================
+// PERCURSOS
+// =========================
 
 /**
  * @brief Executa uma busca em largura (BFS) a partir de um vértice.
  *
- * Apenas percorre vértices com a mesma frequência.
+ * Apenas percorre vértices com a mesma frequência do vértice de partida.
+ * Retorna uma nova lista ligada com os vértices visitados, na ordem em que foram explorados.
  *
  * @param start Vértice de partida.
- * @param visit Função a aplicar em cada vértice visitado.
+ * @return Lista ligada com os vértices visitados ou NULL em caso de erro.
  */
-void graph_bfs(Vertex *start, VisitCallback visit);
+Vertex *graph_bfs(Vertex *start);
 
 /**
- * @brief Executa uma busca em profundidade (DFS) recursiva.
+ * @brief Executa uma busca em profundidade (DFS) a partir de um vértice.
  *
- * Apenas percorre vértices com a mesma frequência.
+ * Apenas percorre vértices com a mesma frequência do vértice de partida.
+ * Retorna uma nova lista ligada com os vértices visitados, na ordem em que foram explorados.
  *
  * @param start Vértice de partida.
- * @param visit Função a aplicar em cada vértice visitado.
+ * @return Lista ligada com os vértices visitados ou NULL em caso de erro.
  */
-void graph_dfs(Vertex *start, VisitCallback visit);
+Vertex *graph_dfs(Vertex *start);
+
+// =========================
+// CAMINHOS E INTERSEÇÕES (NÃO IMPLEMENTADOS)
+// =========================
 
 /**
- * @brief Procura e imprime todos os caminhos entre dois vértices.
- *
- * Apenas considera vértices com a mesma frequência.
- *
- * @param start Vértice inicial.
- * @param end Vértice destino.
+ * @brief [NÃO IMPLEMENTADO]
+ * @note Função referida em aula mas não abordada em profundidade.
  */
-void graph_find_all_paths(Vertex *start, Vertex *end);
+/// int graph_find_all_paths(Vertex *start, Vertex *end);
 
 /**
- * @brief Lista todas as interseções entre antenas de duas frequências distintas.
- *
- * @param g Grafo a analisar.
- * @param freq_a Primeira frequência.
- * @param freq_b Segunda frequência.
+ * @brief [NÃO IMPLEMENTADO]
+ * @note Referido em contexto teórico; não incluído para garantir domínio do código.
  */
-void graph_list_frequency_intersections(GR *g, char freq_a, char freq_b);
+/// int graph_list_frequency_intersections(GR *g, char freq_a, char freq_b);

@@ -7,6 +7,9 @@
     "terminal_colors.h": "c",
     "ed_io.h": "c",
     "effect.h": "c",
-    "display.h": "c"
+    "display.h": "c",
+    "algorithms.h": "c",
+    "queue.h": "c",
+    "constants.h": "c"
   }
 }

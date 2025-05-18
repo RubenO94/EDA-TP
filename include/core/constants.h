@@ -71,3 +71,5 @@
  *
  */
 #define MAX_VERTICES 1000
+
+#define VERTEX_END_MARKER 9999

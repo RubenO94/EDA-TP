@@ -1,48 +1,58 @@
 /**
  * @file graph_io.h
  * @author
- * @brief Operações de entrada/saída para guardar e carregar grafos (binário e texto).
+ * @brief Funções de entrada/saída para ler e guardar grafos de ficheiros de texto ou binário.
  * @version 1.0
- * @date 2025-05-XX
+ * @date 2025-05-12
  *
- * Este módulo permite guardar grafos em ficheiros binários e carregar grafos a partir de ficheiros de texto
- * com mapas de antenas, onde cada antena é representada por um caractere (A-Z, a-z).
+ * Este módulo permite carregar um grafo a partir de uma matriz de texto, bem como
+ * guardar e restaurar grafos a partir de ficheiros binários.
  */
 
 #pragma once
 #include "core/graph.h"
-#include "utils/geometry.h" // Para Dimensions
-#include <stdio.h>
+
+// =========================
+// CARREGAMENTO DE TEXTO
+// =========================
 
 /**
- * @brief Guarda o grafo completo num ficheiro binário.
+ * @brief Carrega um grafo a partir de um ficheiro de texto com a matriz de antenas.
  *
- * Armazena todos os vértices com as suas coordenadas, frequência e adjacências.
+ * Esta função lê o ficheiro linha a linha e cria vértices com base em caracteres alfabéticos.
+ * Posições com '.' são ignoradas. As coordenadas são deduzidas da posição do caractere na matriz.
  *
+ * O grafo deve já ter sido criado com graph_create().
+ *
+ * @param filepath Caminho para o ficheiro .txt (matriz).
+ * @param g Grafo já criado onde os vértices serão inseridos.
+ * @return 1 em caso de sucesso, 0 em caso de erro (ficheiro inválido ou falha de inserção).
+ */
+int graph_load_from_txt(const char *filepath, GR *g);
+
+// =========================
+// BINÁRIO: GUARDA E CARREGA
+// =========================
+
+/**
+ * @brief Guarda o grafo num ficheiro binário.
+ *
+ * A função grava os vértices (frequência, coordenadas) e os seus vizinhos,
+ * através das coordenadas dos vértices adjacentes.
+ *
+ * @param filepath Caminho para o ficheiro binário de destino.
  * @param g Grafo a guardar.
- * @param filename Caminho para o ficheiro .bin.
  * @return 1 em caso de sucesso, 0 em caso de erro.
  */
-int save_graph(const GR *g, const char *filename);
+int graph_save_to_bin(const char *filepath, const GR *g);
 
 /**
  * @brief Carrega um grafo completo a partir de um ficheiro binário.
  *
- * Reconstrói todos os vértices e arestas.
+ * Lê os vértices e depois reconstrói as arestas usando as coordenadas dos adjacentes.
+ * O grafo é criado dentro da função e deve ser libertado com graph_free().
  *
- * @param filename Caminho do ficheiro .bin.
- * @return Apontador para o grafo carregado ou NULL em caso de erro.
+ * @param filepath Caminho para o ficheiro binário.
+ * @return Apontador para o grafo carregado, ou NULL em caso de erro.
  */
-GR *load_graph(const char *filename);
-
-/**
- * @brief Constrói um grafo a partir de um ficheiro de texto com a matriz de antenas.
- *
- * Cada linha do ficheiro representa uma linha da matriz. Apenas letras (A-Z, a-z) são consideradas antenas.
- * As posições são usadas como coordenadas (x, y). O grafo resultante conecta antenas com a mesma frequência.
- *
- * @param filename Caminho do ficheiro .txt.
- * @param dim Estrutura opcional onde serão armazenadas as dimensões da matriz (pode ser NULL).
- * @return Grafo construído com os vértices e ligações, ou NULL em caso de erro.
- */
-GR *load_graph_from_txt(const char *filename, Dimensions *dim);
+GR *graph_load_from_bin(const char *filepath);
