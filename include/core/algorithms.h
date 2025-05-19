@@ -47,7 +47,7 @@ Vertex *graph_dfs(Vertex *start);
  * @brief [NÃO IMPLEMENTADO]
  * @note Função referida em aula mas não abordada em profundidade.
  */
-/// int graph_find_all_paths(Vertex *start, Vertex *end);
+int graph_find_all_paths(Vertex *start, Vertex *end);
 
 /**
  * @brief [NÃO IMPLEMENTADO]

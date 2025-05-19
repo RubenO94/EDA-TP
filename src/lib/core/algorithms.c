@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Funcoes Aux
+static Vertex *dfs_recursive(Vertex *v, char target_freq);
+int find_all_paths(Vertex *current, Vertex *end, Vertex **path, int depth);
+
+
 Vertex *graph_bfs(Vertex *start)
 {
   if (!start)
@@ -15,7 +20,6 @@ Vertex *graph_bfs(Vertex *start)
     return NULL;
 
   Vertex *visit_list = NULL;
-  Vertex *visit_tail = NULL;
 
   queue_enqueue(q, start);
   start->visited = 1;
@@ -25,16 +29,26 @@ Vertex *graph_bfs(Vertex *start)
     Vertex *current;
     queue_dequeue(q, &current);
 
-    // Criar uma cópia para a lista de visitados
+    // Criar cópia do vértice visitado
     Vertex *copy = graph_create_vertex(current->frequency, current->x, current->y);
+    if (!copy)
+    {
+      queue_free(q);
+      return NULL;
+    }
+
+    // Adicionar ao fim da lista (sem tail → percorre até ao fim)
     if (!visit_list)
     {
-      visit_list = visit_tail = copy;
+      visit_list = copy;
     }
     else
     {
-      visit_tail->next = copy;
-      visit_tail = copy;
+      Vertex *tmp = visit_list;
+      while (tmp->next)
+        tmp = tmp->next;
+
+      tmp->next = copy;
     }
 
     for (Adj_Node *adj = current->adj_list; adj; adj = adj->next)
@@ -55,8 +69,20 @@ Vertex *graph_bfs(Vertex *start)
   return visit_list;
 }
 
+Vertex *graph_dfs(Vertex *start)
+{
+  if (!start)
+    return NULL;
+
+  Vertex *head = NULL;
+
+  head = dfs_recursive(start, start->frequency);
+
+  return head;
+}
+
 // Função auxiliar recursiva
-static Vertex *dfs_recursive(Vertex *v, char target_freq, Vertex **tail)
+static Vertex *dfs_recursive(Vertex *v, char target_freq)
 {
   if (!v || v->visited || v->frequency != target_freq)
     return NULL;
@@ -67,34 +93,64 @@ static Vertex *dfs_recursive(Vertex *v, char target_freq, Vertex **tail)
   if (!copy)
     return NULL;
 
-  // Se é o primeiro da lista, retorna como head
-  if (*tail == NULL)
-  {
-    *tail = copy;
-  }
-  else
-  {
-    (*tail)->next = copy;
-    *tail = copy;
-  }
+  Vertex *last = copy;
 
   for (Adj_Node *adj = v->adj_list; adj; adj = adj->next)
   {
-    dfs_recursive(adj->dest, target_freq, tail);
+    Vertex *sublist = dfs_recursive(adj->dest, target_freq);
+
+    // Concatenar a sublista ao final da lista atual
+    if (sublist)
+    {
+      last->next = sublist;
+
+      // Avançar até ao fim da nova sublista para atualizar last
+      while (last->next)
+        last = last->next;
+    }
   }
 
   return copy;
 }
 
-Vertex *graph_dfs(Vertex *start)
+int graph_find_all_paths(Vertex *start, Vertex *end)
 {
-  if (!start)
-    return NULL;
+    if (!start || !end)
+        return -1;  // Erro
 
-  Vertex *head = NULL;
-  Vertex *tail = NULL;
-
-  head = dfs_recursive(start, start->frequency, &tail);
-
-  return head;
+    Vertex *path[MAX_VERTICES];
+    return find_all_paths(start, end, path, 0);
 }
+
+int find_all_paths(Vertex *current, Vertex *end, Vertex **path, int depth)
+{
+    if (!current)
+        return 0;
+
+    current->visited = 1;
+    path[depth] = current;
+
+    int total_paths = 0;
+
+    if (current == end)
+    {
+        // Imprimir o caminho atual
+        for (int i = 0; i <= depth; i++)
+            printf("(%d,%d)%s", path[i]->x, path[i]->y, (i == depth) ? "\n" : " -> ");
+        total_paths = 1;
+    }
+    else
+    {
+        for (Adj_Node *adj = current->adj_list; adj; adj = adj->next)
+        {
+            if (!adj->dest->visited)
+            {
+                total_paths += find_all_paths(adj->dest, end, path, depth + 1);
+            }
+        }
+    }
+
+    current->visited = 0; // backtrack
+    return total_paths;
+}
+

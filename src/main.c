@@ -19,9 +19,9 @@
 int main(void)
 {
   // !!! Descomentar para ativar o menu da Fase 1
-  // start_menu();
+  start_menu();
 
-  printf("== INÍCIO DO HAPPY PATH ==\n");
+  printf("== INÍCIO DO HAPPY PATH - FASE 2 ==\n");
 
   // =========================
   // 1. Carregar grafo do .txt
@@ -47,7 +47,7 @@ int main(void)
   // =========================
   // 4. BFS e DFS a partir de um vértice conhecido
   // =========================
-  Vertex *start = graph_find_vertex(g, 0, 0); // Exemplo: vértice 'B'
+  Vertex *start = graph_find_vertex(g, 0, 0);
   if (!start)
   {
     fprintf(stderr, "Vértice de partida não encontrado.\n");
@@ -66,19 +66,16 @@ int main(void)
   graph_clear_visits(g);
 
   // =========================
-  // 5. Caminhos e interseções (opcional)
+  // 5. Caminhos
   // =========================
-  /*
-  Vertex *end = graph_find_vertex(g, 4, 2);
+
+  Vertex *end = graph_find_vertex(g, 4, 4);
   if (end) {
     printf("\n--- Todos os caminhos de (%d,%d) para (%d,%d) ---\n", start->x, start->y, end->x, end->y);
     graph_find_all_paths(start, end);
     graph_clear_visits(g);
   }
 
-  printf("\n--- Interseções entre frequências A e B ---\n");
-  graph_list_frequency_intersections(g, 'A', 'B');
-  */
 
   // =========================
   // 6. Guardar grafo em .bin

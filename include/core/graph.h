@@ -79,6 +79,14 @@ GR *graph_create();
  */
 Vertex *graph_create_vertex(char frequency, int x, int y);
 
+/**
+ * @brief 
+ * 
+ * @param to 
+ * @return Adj_Node* 
+ */
+Adj_Node *graph_create_adj_node(Vertex *to);
+
 // =========================
 // INSERÇÃO E ESTRUTURAÇÃO
 // =========================
@@ -128,6 +136,15 @@ int graph_connect_adjacent_nodes(GR *g);
  */
 Vertex *graph_find_vertex(GR *g, int x, int y);
 
+/**
+ * @brief 
+ * 
+ * @param from 
+ * @param to 
+ * @return int 
+ */
+int graph_has_edge(Vertex *from, Vertex *to);
+
 // =========================
 // VALIDAÇÃO
 // =========================
@@ -145,6 +162,15 @@ Vertex *graph_find_vertex(GR *g, int x, int y);
  * @return Código de validação (enum VertexValidation).
  */
 int graph_validate_vertex(GR *g, char frequency, int x, int y);
+
+/**
+ * @brief 
+ * 
+ * @param from 
+ * @param to 
+ * @return int 
+ */
+int graph_validate_edge(Vertex *from, Vertex *to);
 
 // =========================
 // UTILITÁRIOS

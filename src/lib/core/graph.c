@@ -10,28 +10,40 @@
 GR *graph_create()
 {
   GR *g = malloc(sizeof(GR));
-  if (!g)
-    return NULL;
+  if (g)
+  {
+    g->head = NULL;
+    g->vertex_count = 0;
+  }
 
-  g->head = NULL;
-  g->vertex_count = 0;
   return g;
 }
 
 Vertex *graph_create_vertex(char frequency, int x, int y)
 {
   Vertex *v = malloc(sizeof(Vertex));
-  if (!v)
-    return NULL;
-
-  v->frequency = frequency;
-  v->x = x;
-  v->y = y;
-  v->visited = 0;
-  v->adj_list = NULL;
-  v->next = NULL;
+  if (v)
+  {
+    v->frequency = frequency;
+    v->x = x;
+    v->y = y;
+    v->visited = 0;
+    v->adj_list = NULL;
+    v->next = NULL;
+  }
 
   return v;
+}
+
+Adj_Node *graph_create_adj_node(Vertex *to)
+{
+  Adj_Node *edge = malloc(sizeof(Adj_Node));
+  if (!edge)
+    return NULL;
+
+  edge->dest = to;
+  edge->next = NULL;
+  return edge;
 }
 
 // =========================
@@ -43,23 +55,34 @@ int graph_add_vertex(GR *g, Vertex *v)
   if (!g || !v)
     return 0;
 
+  // Evitar duplicados
   if (graph_find_vertex(g, v->x, v->y))
     return 0;
 
-  // Inserção ordenada por y, depois x
-  if (!g->head || (v->y < g->head->y || (v->y == g->head->y && v->x < g->head->x)))
+  // CASO 1: Lista vazia → v é o primeiro
+  if (!g->head)
+  {
+    g->head = v;
+  }
+  // CASO 2: v deve ficar antes do atual head → inserir no início
+  else if (v->y < g->head->y || (v->y == g->head->y && v->x < g->head->x))
   {
     v->next = g->head;
     g->head = v;
   }
+  // CASO 3: Inserção no meio ou fim
   else
   {
     Vertex *curr = g->head;
+
+    // Avançar até encontrar o ponto certo para inserir
     while (curr->next &&
            (curr->next->y < v->y || (curr->next->y == v->y && curr->next->x < v->x)))
     {
       curr = curr->next;
     }
+
+    // Inserir depois do curr
     v->next = curr->next;
     curr->next = v;
   }
@@ -70,36 +93,46 @@ int graph_add_vertex(GR *g, Vertex *v)
 
 int graph_add_edge(Vertex *from, Vertex *to)
 {
-  if (!from || !to || from == to)
-    return 0;
-  if (from->frequency != to->frequency)
-    return 0;
-  if (graph_has_edge(from, to))
+  // PASSO 1: Validar se é possível adicionar esta aresta
+  if (!graph_validate_edge(from, to))
     return 0;
 
-  Adj_Node *new_edge = malloc(sizeof(Adj_Node));
+  // PASSO 2: Criar nova adjacência
+  Adj_Node *new_edge = graph_create_adj_node(to);
   if (!new_edge)
     return 0;
 
-  new_edge->dest = to;
-  new_edge->next = NULL;
+  // PASSO 3: Inserir ordenado por coordenadas (y, depois x)
 
-  if (!from->adj_list ||
-      (to->y < from->adj_list->dest->y ||
-       (to->y == from->adj_list->dest->y && to->x < from->adj_list->dest->x)))
+  // 3.1 - Se a lista de adjacência está vazia → inserir como primeiro
+  if (!from->adj_list)
+  {
+    from->adj_list = new_edge;
+  }
+  // 3.2 - Se deve ser inserido antes do primeiro elemento atual (head)
+  else if (
+      new_edge->dest->y < from->adj_list->dest->y ||
+      (new_edge->dest->y == from->adj_list->dest->y &&
+       new_edge->dest->x < from->adj_list->dest->x))
   {
     new_edge->next = from->adj_list;
     from->adj_list = new_edge;
   }
+  // 3.3 - Caso geral: inserir no meio ou fim da lista
   else
   {
     Adj_Node *curr = from->adj_list;
+
+    // Avançar até encontrar a posição correta (ordem por y, depois x)
     while (curr->next &&
-           (curr->next->dest->y < to->y ||
-            (curr->next->dest->y == to->y && curr->next->dest->x < to->x)))
+           (curr->next->dest->y < new_edge->dest->y ||
+            (curr->next->dest->y == new_edge->dest->y &&
+             curr->next->dest->x < new_edge->dest->x)))
     {
       curr = curr->next;
     }
+
+    // Inserir após `curr`
     new_edge->next = curr->next;
     curr->next = new_edge;
   }
@@ -186,6 +219,21 @@ int graph_validate_vertex(GR *g, char frequency, int x, int y)
   return VALID;
 }
 
+int graph_validate_edge(Vertex *from, Vertex *to)
+{
+  if (!from || !to || from == to)
+    return 0;
+
+  if (from->frequency != to->frequency)
+    return 0;
+
+  if (graph_has_edge(from, to))
+    return 0;
+
+  return 1;
+}
+
+
 // =========================
 // UTILITÁRIOS
 // =========================
@@ -250,3 +298,4 @@ void graph_print_vertices(Vertex *list)
     printf("Visitado: (%d, %d) [%c]\n", v->x, v->y, v->frequency);
   }
 }
+
