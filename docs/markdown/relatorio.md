@@ -138,6 +138,7 @@ Esta abordagem permite manter uma única estrutura comum para representar elemen
 Para além da estrutura base, foram implementadas funções auxiliares para criação de nós, inserção ordenada ou em posições específicas, verificação de duplicação de coordenadas e comparação de frequências.
 
 A lista ligada é manipulada através de ponteiros, permitindo a sua expansão ou redução consoante as operações efetuadas, e garantindo uma gestão eficiente da memória.
+
 ## 6. Funcionalidades (TODO...)
 
 ## 7. Testes (TODO...)

@@ -10,7 +10,7 @@
  */
 
 #pragma once
-#include "ed.h"
+#include "core/ed.h"
 
 /**
  * @brief Verifica se uma frequência é válida (A-Z, a-z).

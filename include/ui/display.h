@@ -11,17 +11,17 @@
 
 #pragma once
 
-#include "ed.h"
-#include "geometry.h"
-#include "terminal_colors.h"
+#include "core/ed.h"
+#include "utils/geometry.h"
+#include "ui/terminal_colors.h"
 
 /**
  * @brief Modo de visualização da matriz.
  */
 typedef enum
 {
-    PRINT_ANTENNAS_ONLY, /// Mostra apenas as antenas
-    PRINT_WITH_EFFECTS   /// Mostra antenas e efeitos nefastos (se existirem)
+  PRINT_ANTENNAS_ONLY, // Mostra apenas as antenas
+  PRINT_WITH_EFFECTS   // Mostra antenas e efeitos nefastos (se existirem)
 } PrintMode;
 
 /**

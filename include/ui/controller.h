@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "ed.h"
-#include "geometry.h"
+#include "core/ed.h"
+#include "utils/geometry.h"
 
 /// Lista global de antenas (ligada).
 extern ED *antennas;

@@ -8,8 +8,8 @@ Implementação de um sistema de gestão de antenas e deteção de efeitos nefas
 ├── src/                  # Código-fonte do projeto
 ├── include/              # Ficheiros de cabeçalho (.h)
 ├── docs/                 # Relatório em Markdown
-├── input/                 # Ficheiros de entrada (mapas de antenas)
-├── binbuild/                # Binários gerados (não incluídos)
+├── input/                # Ficheiros de entrada (mapas de antenas)
+├── bin/                  # Binários gerados (não incluídos)
 ├── Doxyfile              # Ficheiro de configuração do Doxygen
 └── README.md             # Este ficheiro
 ```
@@ -30,7 +30,7 @@ Implementação de um sistema de gestão de antenas e deteção de efeitos nefas
    ```bash
    doxygen Doxyfile
    ```
-   A documentação será gerada na pasta `docs/html`.
+   A documentação será gerada na pasta `docs/doxygen`.
 
 ## 📄 Relatório
 
